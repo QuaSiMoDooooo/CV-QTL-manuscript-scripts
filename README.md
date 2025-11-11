@@ -2,6 +2,10 @@
 
 This repository contains all the analysis scripts for the CV-QTL manuscript. The scripts are organized by sub-folder following the order presented in the manuscript.
 
+### Overview
+
+![Overview of the main workflow and methods employed.](images/overview.png)
+
 ## Project Structure
 
 | Folder Number | Directory Name | Description | Key Components |
