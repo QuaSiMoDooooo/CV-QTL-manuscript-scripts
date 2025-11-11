@@ -1,0 +1,12 @@
+name: alignment
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - conda-forge::click=8.1.7
+    - bioconda::pbmm2=1.13
+    - bioconda::mosdepth=0.3
+    - bioconda::bedtools=2.31
+    - bioconda::samtools=1.19
+    - conda-forge::ncurses

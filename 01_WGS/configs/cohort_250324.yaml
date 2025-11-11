@@ -1,0 +1,11 @@
+# cohort_id: Pacbio_test
+cohort_id: GRCh38_20250321
+reference_build: GRCh38
+targets:
+    - alignment
+    - SNP
+
+input_dir: 'resources/raw/ubam_0324'    # sequence files dir path
+# input_dir: 'resources/data/test' # for test
+file_suffix: 'bam'    # bam | fastq.gz
+regex: '(?P<sample>HN-[A-Za-z0-9]+)__(?P<movie>\d+[AB]_m\d{5}U?e?_\d{6}_\d{6}(_s\d+)?_(ccs|hifi_reads)?_(bc\d{4})?)\.bam(\.gz)?$'

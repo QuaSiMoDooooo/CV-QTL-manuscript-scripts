@@ -1,0 +1,111 @@
+# -*- coding: UTF-8 -*-
+#
+# FileName     : Sample copy
+# Author       : EastsunW eastsunw@foxmail.com
+# Create at    : 2024-01-29 17:23
+# Last Modified: 2024-01-29 17:23
+# Modified By  : EastsunW(Dongyang Wang)
+# -------------
+# Description  :
+# -------------
+
+
+configfile: "configs/config.yaml"  # general configuration
+
+
+conda: "envs/global.yaml"
+
+
+from scripts.parse_cohort import Cohort
+
+
+cohort = Cohort(
+    config["cohort_yaml"], config["reference_yaml"], config["dependency_yaml"]
+)
+
+
+targets = []
+
+
+if "alignment" in cohort.targets:
+
+    include: "modules/alignment.smk"
+
+    # aligned_bams
+    targets.extend(
+        [
+            f"results/{cohort.id}/alignment/{sample_id}.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in ["bam", "bam.bai", "report"]
+        ]
+    )
+
+
+if "QC" in cohort.targets:
+
+    include: "modules/QC.smk"
+
+    targets.extend(
+        [
+            multiext(
+                f"results/{cohort.id}/QC/rnaseqc/{sample}/{sample}",
+                ".metrics.tsv",
+                ".coverage.tsv",
+                ".exon_cv.tsv",
+                ".exon_reads.gct",
+                ".gene_tpm.gct",
+                ".gene_reads.gct",
+                ".gene_fragments.gct",
+            )
+            for sample in cohort.list_samples()
+        ]
+    )
+    targets.extend(
+        [
+            f"results/{cohort.id}/QC/rseqc/{cohort.id}.geneBodyCoverage.txt"
+        ]
+    )
+
+
+if "expression" in cohort.targets:
+
+    include: "modules/expression.smk"
+
+    targets.extend(
+        [
+            f"results/{cohort.id}/expression/expression_cohort/{cohort.id}.{norm_type}.txt"
+            for norm_type in ["rawcount", "rawtpm", "log2tpm"]
+        ]
+    )
+
+
+if "APA" in cohort.targets:
+
+    include: "modules/APA.smk"
+
+    targets.extend([f"results/{cohort.id}/APA/{cohort.id}.QAPA.txt"])
+
+
+
+if "AS" in cohort.targets:
+
+    include: "modules/AS.smk"
+
+    # 合并后的结果
+    targets.extend([f"results/{cohort.id}/AS/{cohort.id}.AS.txt"])
+
+
+if "report" in cohort.targets:
+
+    include: "modules/report.smk"
+
+    targets.extend(
+        [
+            f"results/{cohort.id}/report/{cohort.id}.multiqc.html",
+        ]
+    )
+
+
+rule all:
+    input:
+        targets,

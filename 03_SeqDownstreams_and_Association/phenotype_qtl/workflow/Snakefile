@@ -1,0 +1,69 @@
+configfile: "configs/default.yaml"
+
+
+include: "prepare_variant.smk"
+include: "prepare_phenotype.smk"
+include: "prepare_plink_file.smk"
+include: "prepare_covariant.smk"
+include: "process_QTL.smk"
+include: "process_GWAS.smk"
+
+
+targets = []
+
+# QTL 原始结果
+targets.extend(
+    [
+        f"results/{variant}-{phenotype}/QTL_results/{qtl_type}.txt.gz"
+        for variant in ["SNP", "InDel", "MNV", "SV"]
+        for phenotype in ["expression", "APA", "splicing", "methylation"]
+        for qtl_type in ["cis", "trans"]
+    ]
+)
+
+# QTL 筛选后的结果
+targets.extend(
+    [
+        f"results/{variant}-{phenotype}/QTL_results/{qtl_type}.filtered.txt.gz"
+        for variant in ["SNP", "InDel", "MNV", "SV"]
+        for phenotype in ["expression", "APA", "splicing", "methylation"]
+        for qtl_type in ["cis", "trans"]
+    ]
+)
+
+## 变异的plink文件和关联结果
+targets.extend(
+    [
+        f"results/{variant}-biochemistry/{variant}.biochem_{biochem_type}.{suffix}"
+        for variant in ["SNP", "InDel", "MNV", "SV"]
+        for biochem_type in ["common", "male", "female"]
+        for suffix in ["ped", "map", "bed", "bim", "fam"]
+    ]
+)
+## 生化指标的表型矩阵
+targets.extend(
+    [
+        f"results/common_data/phenotype/biochem_{biochem_type}.norm.txt"
+        for biochem_type in ["common", "male", "female"]
+    ]
+)
+## plink的协变量
+targets.extend(
+    [
+        f"results/common_data/covariant/biochem_{biochem_type}.covariant.txt"
+        for clinic_type in ["common", "male", "female"]
+    ]
+)
+## GWAS结果
+targets.extend(
+    [
+        f"results/{variant}-biochemistry/biochem_{biochem_type}"
+        for variant in ["SNP", "InDel", "MNV", "SV"]
+        for biochem_type in ["common", "male", "female"]
+    ]
+)
+
+
+rule all:
+    input:
+        targets,

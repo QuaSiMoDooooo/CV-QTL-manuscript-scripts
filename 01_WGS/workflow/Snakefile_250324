@@ -1,0 +1,242 @@
+# -*- coding: UTF-8 -*-
+#
+# FileName     : Sample copy
+# Author       : EastsunW eastsunw@foxmail.com
+# Create at    : 2024-01-29 17:23
+# Last Modified: 2024-01-29 17:23
+# Modified By  : EastsunW(Dongyang Wang)
+# -------------
+# Description  :
+# -------------
+
+
+configfile: "configs/config_250324.yaml"  # general configuration
+
+
+conda: "envs/global.yaml"
+
+
+from scripts.parse_cohort import Cohort
+
+cohort = Cohort(
+    config["cohort_yaml"], config["reference_yaml"], config["dependency_yaml"]
+)
+
+targets = []
+
+if "alignment" in cohort.targets:
+
+    include: "modules/alignment.smk"
+
+    # aligned_bams
+    targets.extend(
+        [
+            f"results/{cohort.id}/alignment/aligned_bams/{sample_id}.merged.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in ["bam", "bam.csi"]
+        ]
+    )
+    # alignment_depth
+    targets.extend(
+        [
+            f"results/{cohort.id}/alignment/stat_depth/{sample_id}.mosdepth.summary.txt"
+            for sample_id in cohort.list_samples()
+        ]
+    )
+    # alignment_coverage
+    targets.extend(
+        [
+            f"results/{cohort.id}/alignment/stat_depth/{sample_id}.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in [
+                "mosdepth.summary.txt",
+                "per-base.bed.gz",
+                "per-base.bed.gz.csi",
+                "high_depth.bed.gz",
+            ]
+        ]
+    )
+    # alignment_mappingrate
+    targets.extend(
+        [
+            f"results/{cohort.id}/alignment/stat_mappingrate/{sample_id}.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in ["mappingrate.summary.txt"]
+        ]
+    )
+    # alignment_summary
+    targets.extend(
+        [
+            f"results/{cohort.id}/alignment/{cohort.id}.{stat_type}.summary.txt"
+            for stat_type in ["depth", "coverage", "mappingrate"]
+        ]
+    )
+
+
+if "SNP" in cohort.targets:
+
+    include: "modules/SNP.smk"
+
+    targets.extend(
+        [
+            f"results/{cohort.id}/SNP/clair3_cohort/{cohort.id}.{snp_type}.{suffix}"
+            for snp_type in ["cohort"]
+            for suffix in ["vcf.gz"]
+        ]
+    )
+    targets.extend(
+        [
+            f"results/{cohort.id}/SNP/SNP_sample_increase.stat.txt"
+        ]
+    )
+
+
+if "MNV" in cohort.targets:
+
+    include: "modules/MNV.smk"
+
+    # phase with shapeit
+    targets.extend(
+        [
+            f"results/{cohort.id}/MNV/{SNP_type}/{cohort.id}.phased.{suffix}"
+            for SNP_type in ["clair3"]
+            for suffix in ["vcf.gz", "vcf.gz.csi"]
+        ]
+    )
+
+    # MNV_identify
+    targets.extend(
+        [
+            f"results/{cohort.id}/MNV/{SNP_type}/{cohort.id}.{filename}.txt"
+            for SNP_type in ["clair3"]
+            for filename in ["mnv", "mnv_multi", "mnv.withID"]
+        ]
+    )
+
+
+if "SV" in cohort.targets:
+
+    include: "modules/SV.smk"
+
+    # SV call
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/sample_pbsv/sv_call/{sample_id}.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in [
+                "vcf.gz",
+                "vcf.gz.tbi",
+            ]
+        ]
+    )
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/sample_cuteSV/{sample_id}.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in [
+                "vcf.gz",
+                "vcf.gz.tbi",
+            ]
+        ]
+    )
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/sample_sniffles2/{sample_id}.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in ["vcf.gz", "vcf.gz.tbi"]
+        ]
+    )
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/sample_SVisionpro/{sample_id}.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in ["simple.vcf.gz", "complex.vcf.gz"]
+        ]
+    )
+
+    # SV format for merge
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/sample_formated/{software}/{sample_id}.formated.vcf.gz"
+            for software in ["cuteSV", "SVision", "sniffles2", "pbsv"]
+            for sample_id in cohort.list_samples()
+        ]
+    )
+
+    # SV merge
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/sample_merged/{sample_id}.raw.vcf.gz"
+            for sample_id in cohort.list_samples()
+        ]
+    )
+
+    # SV filter
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/sample_filtered/{sample_id}.{filter_type}.vcf.gz"
+            for sample_id in cohort.list_samples()
+            for filter_type in ["by_software", "by_depth", "by_length", "by_region"]
+        ]
+    )
+
+    # cohort merge
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/cohort_merged/{cohort.id}.SV.vcf.gz",
+        ]
+    )
+
+    # sample_increase stat
+    targets.extend(
+        [
+            f"results/{cohort.id}/SV/cohort_step/{cohort.id}_sample_increase_stat.txt"
+        ]
+    )
+
+
+if "methylation" in cohort.targets:
+
+    include: "modules/methylation.smk"
+
+    targets.extend(
+        [
+            f"results/{cohort.id}/methylation/methylation_sample/{sample_id}.combined.{suffix}"
+            for sample_id in cohort.list_samples()
+            for suffix in ["bed", "bw"]
+        ]
+    )
+    targets.extend(
+        [
+            f"results/{cohort.id}/methylation/methylation_cohort/{cohort.id}.merged.txt"
+        ]
+    )
+
+
+if "TR" in cohort.targets:
+
+    include: "modules/TR.smk"
+
+    targets.extend(
+        [
+            f"results/{cohort.id}/TR/sample_trgt/{sample_id}/{sample_id}.{tr_type}.{suffix}"
+            for sample_id in cohort.list_samples()
+            for tr_type in ["normal", "disease"]
+            for suffix in [
+                "vcf.gz",
+                "vcf.gz.tbi",
+                "spanning.bam",
+                "spanning.bam.bai",
+            ]
+        ]
+    )
+    targets.extend([
+        f"results/{cohort.id}/TR/cohort_trgt/{cohort.id}.{tr_type}.{suffix}"
+        for tr_type in ["normal", "disease"]
+        for suffix in ["vcf.gz", "vcf.gz.tbi"]
+    ])
+
+
+rule all:
+    input:
+        targets,

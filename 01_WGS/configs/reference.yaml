@@ -1,0 +1,17 @@
+GRCh38:
+    alignment:
+        fasta: '/home/data_admin/Reference/Genome/GRCh38.ncbi.fasta'
+        index: '/home/data_admin/Reference/Genome/GRCh38.ncbi.fasta.fai'
+    SNP:
+        clair3:
+            glnexus_config: 'resources/reference/SNP/clair3/glnexus_config.yml'
+    SV:
+        tandem_repeats: 'resources/reference/SV/NCBI.GRCh38.no_alt.trf.bed'
+        centromeres_region: 'resources/reference/SV/centromeres.hg38.bed.gz'
+        gap_telomere_region: 'resources/reference/SV/gaps_telomere.hg38.bed.gz'
+    MNV:
+        shapeit:
+            reference_panel: 'resources/reference/MNV/phasing_panel/1000Genomes_EAS_genotype.chr%chr%.vcf.gz'
+    TR:
+        normal: 'resources/reference/tendem_repeat/adotto_repeats.hg38.bed'
+        disease: 'resources/reference/tendem_repeat/hg38.STRchive-disease-loci.TRGT.bed'

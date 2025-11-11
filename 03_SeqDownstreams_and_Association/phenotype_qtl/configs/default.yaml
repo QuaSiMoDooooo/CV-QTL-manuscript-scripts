@@ -1,0 +1,27 @@
+data_filter:
+    blacklist: "resources/filter/hg38-blacklist.v2.bed"
+    SNP:
+        include_multi: false
+        min_hwe: 0.000001
+        min_maf: 0.05
+        max_na_rate: 0.95
+    MNV:
+        min_maf: 0.05
+    SV:
+        include_BND: false
+        min_maf: 0.05
+        max_na_rate: 0
+    expression:
+        average_expression: 0.1
+        median_expression: 0.1
+        max_na_rate: 0.05
+    APA:
+        max_na_rate: 0.05
+    splicing:
+        max_na_rate: 0.05
+
+QTL:
+    threads: 10
+    pvalue: 0.00000005
+    fdr: 0.05
+    cis_window: 1000000

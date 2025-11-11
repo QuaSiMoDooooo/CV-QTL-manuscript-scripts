@@ -1,0 +1,90 @@
+cohort_yaml    : 'configs/cohort_250324.yaml'
+reference_yaml : 'configs/reference.yaml'
+dependency_yaml: 'configs/dependency.yaml'
+
+# 比对参考基因组
+alignment:
+    threads: 10
+    extra_params: '--sort --sort-threads 2 --preset HIFI --unmapped'
+
+SNP:
+    pepper:
+        pepper_version: 'r0.8'
+        pepper_threads: 20
+        pepper_params: '--hifi --gvcf'
+        glnexus_version: 'v1.4.1'
+        glnexus_threads: 50
+        glnexus_add_tags: 'AN,AC,MAF,HWE'
+        glnexus_params: '--config DeepVariant'
+    clair3:
+        clair3_version: 'latest'
+        clair3_threads: 20
+        clair3_model: 'hifi_revio'
+        clair3_params: '--platform="hifi" --gvcf --remove_intermediate_dir'
+        glnexus_version: 'v1.4.1'
+        glnexus_threads: 80
+        glnexus_add_tags: 'AN,AC,MAF,HWE'
+        glnexus_params: ''
+
+MNV:
+    process_GT:
+        threads: 20
+        extra_params: ''
+    shapeit:
+        threads: 4
+        extra_params: ''
+    MNVidentify:
+        extra_params: '-s T -M T -d 10'
+
+SV:
+    pbsv:
+        discover:
+            extra_params: ''
+        call:
+            threads: 20
+            extra_params: '--min-sv-length 50'
+    cuteSV:
+        threads: 20
+        extra_params: '--genotype --max_cluster_bias_INS 1000 --diff_ratio_merging_INS 0.9 --max_cluster_bias_DEL 1000 --diff_ratio_merging_DEL 0.5 --min_support 3 --min_size 50 --max_size 100000'
+    sniffles2:
+        call_threads: 20
+        call_params: '--minsvlen 50'
+        merge_threads: 100
+        merge_params: ''
+    SVision:
+        threads: 20
+        version: 'latest'
+        model_dir: 'resources/reference/SV/SVision_model'
+        extra_params: '--max_sv_size 5000000 -s 3 --graph --qname'
+    SVisionpro:
+        threads: 20
+        version: '2.1.1'
+        model_dir: 'resources/reference/SV/SVisionpro_model'
+        extra_params: '--preset hifi --detect_mode germline --min_sv_size 50 --max_sv_size 100000 --min_mapq 20 --min_supp 3 --max_coverage 500'
+    merge:
+        support_software: 2
+        extend_len: 100
+        overlap_rate: 0.5
+    filter:
+        software_order: 'cutesv,svisionpro,sniffles2,pbsv'
+        min_reads: 3
+        length_field: 'AVGLEN'
+        max_len_ins: 10000
+        max_len_del: 10000
+        max_len_inv: 100000
+        max_len_dup: 100000
+        high_depth_threshold: 500
+        remove_contig: 'chrY,chrM'
+
+
+TR:
+    trgt:
+        threads: 10
+        version: '1.2.0_build1'
+        extra_params: ''
+
+methylation:
+    pb_cpg_tool:
+        version: 'v2.3.2'
+        threads: 10
+        extra_params: '--min-coverage 10 --min-mapq 30 --model $PILEUP_MODEL_DIR/pileup_calling_model.v1.tflite'

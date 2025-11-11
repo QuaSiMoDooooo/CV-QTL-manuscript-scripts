@@ -1,0 +1,10 @@
+name: variant
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - bioconda::vcftools=0.1.16
+    - bioconda::tabix=1.11
+    - bioconda::bcftools=1.19
+    - conda-forge::py-bgzip=0.4

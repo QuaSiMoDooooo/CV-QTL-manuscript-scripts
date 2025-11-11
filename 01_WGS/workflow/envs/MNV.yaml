@@ -1,0 +1,11 @@
+name: MNV
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - bioconda::shapeit4=4.2.0
+    - bioconda::shapeit5=5.1.1
+    - bioconda::tabix=1.11
+    - bioconda::bcftools=1.19
+    - conda-forge::py-bgzip=0.4

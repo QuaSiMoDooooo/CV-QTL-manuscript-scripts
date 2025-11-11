@@ -1,0 +1,7 @@
+name: QC
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - bioconda::rseqc=5.0.3
+  - bioconda::rna-seqc=2.4.2

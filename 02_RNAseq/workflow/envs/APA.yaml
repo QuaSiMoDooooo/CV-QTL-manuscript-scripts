@@ -1,0 +1,21 @@
+name: APA
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - pandas>=2.0.2
+  - numpy>=1.10
+  - bedtools>=2.27.1
+  - pybedtools>=0.7
+  - biopython>=1.66
+  - r-base>=3.4
+  - r-dplyr>=0.7
+  - r-optparse
+  - r-data.table
+  - r-rlang>=1.0.1
+  - r-stringr
+  - r-testthat
+  - ucsc-gtftogenepred
+  - pip:
+    - .

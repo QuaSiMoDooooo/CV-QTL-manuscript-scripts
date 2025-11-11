@@ -1,0 +1,10 @@
+name: SV_pbsv
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - bioconda::pbsv=2.9.0
+    - bioconda::samtools=1.20
+    - bioconda::tabix=1.11
+    - conda-forge::py-bgzip=0.4

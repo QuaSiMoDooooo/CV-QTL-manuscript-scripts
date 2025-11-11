@@ -1,0 +1,38 @@
+cohort_yaml   : 'configs/cohort.yaml'
+reference_yaml: 'configs/reference.yaml'
+dependency_yaml: 'configs/dependency.yaml'
+
+quality_control:
+    extra_params: '-q 60 --coverage'
+
+# 比对参考基因组
+alignment:
+    threads     : 10
+    extra_params: '--new-summary'
+
+expression:
+    salmon:
+        threads     : 30
+        extra_params: '--gcBias -l A'
+    featurecounts:
+        threads     : 10
+        extra_params: '-p -t exon -g gene_id'
+
+APA:
+    APAIQ:
+        threads_APAIQ: 30
+        extra_params : '--window 201 --depth	10 --RNASeqRCThreshold 0.05'
+    QAPA:
+        threads_QAPA  : 30
+        threads_salmon: 4
+        extra_params  : ''
+    dapars2:
+        threads           : 40
+        coverage_threshold: 10
+
+AS:
+    bam2junc:
+        extra_params: '-a 8 -m 50 -M 500000 -s 0'
+    intron_clustering:
+        prefix      : 'AS'
+        extra_params: '-m 50 -l 500000 –checkchrom'

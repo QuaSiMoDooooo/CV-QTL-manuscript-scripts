@@ -1,0 +1,13 @@
+cohort_id      : GRCh38_241031
+reference_build: GRCh38
+targets        :
+    - QC
+    - alignment
+    - expression
+    - APA
+    - AS
+    - report
+input_dir: 'resources/fastq'    # sequence files dir path
+# input_dir  : 'resources/data/test' # for test
+file_suffix: 'fastq.gz'    # bam | fastq.gz
+regex      : '(?P<sample>HN-[A-Za-z0-9]+)__(?P<movie>\d+[A|B]_rnaseq_\d{8}_(?P<quality>[a|b|c])[1|2])\.fastq\.gz$'

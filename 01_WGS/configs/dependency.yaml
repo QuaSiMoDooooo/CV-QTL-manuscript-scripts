@@ -1,0 +1,6 @@
+alignment  :
+SNP        : "alignment"
+MNV        : "SNP"
+SV         : "alignment"
+TR         : "alignment"
+methylation: "alignment"

@@ -1,0 +1,10 @@
+name: SV_sniffles2
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - bioconda::sniffles=2.3.3
+    - bioconda::samtools=1.20
+    - bioconda::tabix=1.11
+    - conda-forge::py-bgzip=0.4

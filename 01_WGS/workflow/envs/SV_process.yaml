@@ -1,0 +1,10 @@
+name: SV_process
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - conda-forge::numpy=2.1.3
+    - conda-forge::networkx=3.4.2
+    - bioconda::tabix=1.11
+    - conda-forge::py-bgzip=0.4

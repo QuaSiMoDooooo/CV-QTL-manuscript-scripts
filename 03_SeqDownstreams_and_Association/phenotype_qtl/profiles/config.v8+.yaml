@@ -1,0 +1,9 @@
+rerun-incomplete: true
+printshellcmds: true
+software-deployment-method:
+  - conda
+  - apptainer
+use-conda: true
+use-singularity: true
+singularity-args: "-e"
+# wms-monitor: "http://127.0.0.1:5000"

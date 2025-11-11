@@ -1,0 +1,25 @@
+GRCh38:
+    quality_control:
+        gtf: 'resources/reference/QC/rnaseqc.collapsed.gtf'
+        house_keep_gene: 'resources/reference/QC/hg38.HouseKeepingGenes.bed'
+    alignment:
+        fasta: /home/data_admin/Reference/Genome/GRCh38.gencode_47.fasta'
+        index: /home/data_admin/Reference/Genome/GRCh38.gencode_47.fasta.fai'
+        hisat_index: '/home/data_admin/Reference/Hisat2_index/hisat2_gencode_snp_tran/hisat2_gencode_snp_tran'
+    expression:
+        salmon:
+            index: '/home/data_admin/Reference/Salmon_index/salmon_gencode'
+            gtf: '/home/data_admin/Reference/Annotation/gencode_47.full.gtf'
+    APA:
+        APAIQ:
+            model: 'resources/reference/APA/APAIQ/models/snu398_model.ckpt'
+            pas_db: 'resources/reference/APA/APAIQ/polyADB3_gencode.pAs.bed'
+        QAPA:
+            identifiers: 'resources/reference/APA/QAPA/ensembl_GRCh38_identifier_no_version.txt'
+            pas_db: 'resources/reference/APA/QAPA/qapa_3utrs.gencode_V31.hg38.bed'
+            utr_index: 'resources/reference/APA/QAPA/UTR_index'
+        dapars2:
+            gtf_bed: 'resources/reference/GRCh38/dapars2/gencode.v45.annotation.bed'
+            id_map: 'resources/reference/GRCh38/dapars2/id.map.tsv'
+    AS:
+        exon: 'resources/reference/AS/gencode47.exon.txt.gz'

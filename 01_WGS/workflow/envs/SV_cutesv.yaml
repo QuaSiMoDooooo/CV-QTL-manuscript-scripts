@@ -1,0 +1,10 @@
+name: SV_cutesv
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - bioconda::cutesv=2.1.1
+    - bioconda::samtools=1.20
+    - bioconda::tabix=1.11
+    - conda-forge::py-bgzip=0.4
